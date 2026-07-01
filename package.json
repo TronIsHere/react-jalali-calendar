@@ -1,6 +1,6 @@
 {
   "name": "react-jalali-calendar",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Persian (Jalali) calendar utilities and React components",
   "license": "MIT",
   "type": "module",
