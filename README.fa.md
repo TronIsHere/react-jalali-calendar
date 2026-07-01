@@ -2,8 +2,8 @@
 
 # react-jalali-calendar
 
-کامپوننت‌های تقویم جلالی (شمسی) و ابزارهای تاریخ برای React.  
-ساخته‌شده بر پایه [jalaali-js](https://github.com/jalaali/jalaali-js) بدون هیچ وابستگی به فریم‌ورک UI.
+یه کتابخانه ساده و سبک برای نمایش تقویم شمسی در React.  
+زیرش از [jalaali-js](https://github.com/jalaali/jalaali-js) استفاده می‌کنه و هیچ وابستگی به فریم‌ورک UI خاصی نداره.
 
 [![npm](https://img.shields.io/npm/v/react-jalali-calendar)](https://www.npmjs.com/package/react-jalali-calendar)
 [![license](https://img.shields.io/npm/l/react-jalali-calendar)](./LICENSE)
@@ -19,15 +19,17 @@
 - [کامپوننت‌ها](#کامپوننت‌ها)
   - [JalaliCalendar](#jalaicalendar)
   - [JalaliDatePicker](#jalalidatepicker)
-- [هوک بدون UI](#هوک-بدون-ui)
+- [هوک Headless](#هوک-headless)
 - [توابع پایه](#توابع-پایه)
 - [تم‌بندی](#تم‌بندی)
 - [تایپ‌های TypeScript](#تایپ‌های-typescript)
-- [قرارداد هفته](#قرارداد-هفته)
+- [ترتیب روزهای هفته](#ترتیب-روزهای-هفته)
 
 ---
 
 ## نصب
+
+با هر پکیج منیجری که دوست داری:
 
 ```bash
 npm install react-jalali-calendar
@@ -37,15 +39,17 @@ pnpm add react-jalali-calendar
 yarn add react-jalali-calendar
 ```
 
-**وابستگی‌های همتا** (باید از قبل در پروژه وجود داشته باشند):
+فقط مطمئن شو که `react` و `react-dom` نسخه ۱۸ یا ۱۹ توی پروژه‌ات نصبه:
 
 ```bash
-npm install react react-dom   # نسخه ۱۸ یا ۱۹
+npm install react react-dom
 ```
 
 ---
 
 ## شروع سریع
+
+سریع‌ترین راه اینه که `styles.css` رو یه بار توی entry point اپت ایمپورت کنی (مثلاً `main.tsx` یا `layout.tsx`) و بعد کامپوننت‌ها رو هر جا که خواستی بذاری:
 
 ```tsx
 import { useState } from "react";
@@ -53,26 +57,25 @@ import { JalaliCalendar, JalaliDatePicker } from "react-jalali-calendar";
 import "react-jalali-calendar/styles.css";
 
 export function BookingForm() {
-  const [date, setDate] = useState("");           // رشته "YYYY-MM-DD"
+  const [date, setDate] = useState("");
   const [selected, setSelected] = useState<Date | null>(null);
 
   return (
     <div>
-      {/* تقویم درون‌خطی */}
+      {/* تقویم معمولی درون‌خطی */}
       <JalaliCalendar
         selectedDate={selected}
         onSelectDate={setSelected}
-        latinDigits={false}
       />
 
-      {/* انتخاب‌گر تاریخ با پاپ‌اور */}
+      {/* دکمه‌ای که با کلیک تقویم رو باز می‌کنه */}
       <JalaliDatePicker value={date} onChange={setDate} />
     </div>
   );
 }
 ```
 
-> فایل `styles.css` را فقط یک‌بار در نقطه ورودی اپلیکیشن ایمپورت کنید (مثلاً `main.tsx` یا `layout.tsx`).
+همین! بقیه چیزا اختیاریه و اگه خواستی سفارشی‌سازی کنی ادامه رو بخون.
 
 ---
 
@@ -80,7 +83,7 @@ export function BookingForm() {
 
 ### JalaliCalendar
 
-یک گرید ماهانه درون‌خطی. کامپوننت وضعیت ناوبری را خودش مدیریت می‌کند؛ شما فقط کنترل می‌کنید کدام روز انتخاب شده است.
+یه تقویم ماهانه که مستقیم توی صفحه نشون داده می‌شه. ناوبری بین ماه‌ها رو خودش مدیریت می‌کنه، تو فقط بهش می‌گی کدام روز انتخابه.
 
 ```tsx
 import { JalaliCalendar } from "react-jalali-calendar";
@@ -94,34 +97,34 @@ import { JalaliCalendar } from "react-jalali-calendar";
 **پراپ‌ها**
 
 | پراپ | نوع | پیش‌فرض | توضیح |
-|------|------|---------|-------|
-| `selectedDate` | `Date \| null` | اجباری | تاریخ انتخاب‌شده فعلی. برای بدون انتخاب، `null` بفرستید. |
-| `onSelectDate` | `(date: Date) => void` | اجباری | هنگام کلیک روی یک روز با آبجکت `Date` صدا زده می‌شود. |
-| `isDateDisabled` | `(date: Date) => boolean` | — | برای غیرفعال کردن یک روز `true` برگردانید. |
-| `latinDigits` | `boolean` | `false` | نمایش اعداد به صورت `0-9` به جای `۰-۹`. |
-| `initialMonth` | `{ jy: number; jm: number }` | ماه جاری | سال و ماه جلالی نمایش‌داده‌شده در اولین رندر. |
-| `prevMonthLabel` | `string` | `"ماه قبل"` | `aria-label` دکمه ماه قبل. |
-| `nextMonthLabel` | `string` | `"ماه بعد"` | `aria-label` دکمه ماه بعد. |
-| `className` | `string` | — | کلاس CSS اضافی روی المان ریشه. |
+|------|-----|---------|-------|
+| `selectedDate` | `Date \| null` | اجباری | روز انتخاب‌شده. اگه چیزی انتخاب نشده `null` بده. |
+| `onSelectDate` | `(date: Date) => void` | اجباری | وقتی کاربر روی یه روز کلیک کنه صدا زده می‌شه. |
+| `isDateDisabled` | `(date: Date) => boolean` | — | برای غیرفعال کردن روزهای خاص `true` برگردون. |
+| `latinDigits` | `boolean` | `false` | اعداد رو به جای `۱۴۰۳` به شکل `1403` نشون بده. |
+| `initialMonth` | `{ jy: number; jm: number }` | ماه جاری | تقویم اول بار کدام ماه رو نشون بده. |
+| `prevMonthLabel` | `string` | `"ماه قبل"` | متن aria-label دکمه ماه قبل (برای accessibility). |
+| `nextMonthLabel` | `string` | `"ماه بعد"` | متن aria-label دکمه ماه بعد (برای accessibility). |
+| `className` | `string` | — | اگه می‌خوای کلاس CSS اضافه کنی. |
 
-**مثال‌ها**
+**چند مثال کاربردی**
 
 ```tsx
-// غیرفعال کردن تمام روزهای گذشته
+// روزهای گذشته رو غیرفعال کن (مثلاً برای رزرو)
 <JalaliCalendar
   selectedDate={selected}
   onSelectDate={setSelected}
   isDateDisabled={(date) => date < new Date()}
 />
 
-// باز شدن در ماه خاص (فروردین ۱۴۰۳)
+// تقویم از یه ماه خاص شروع بشه
 <JalaliCalendar
   selectedDate={null}
   onSelectDate={setSelected}
   initialMonth={{ jy: 1403, jm: 1 }}
 />
 
-// اعداد لاتین + کلاس سفارشی
+// اعداد لاتین + یه کلاس برای استایل دادن
 <JalaliCalendar
   selectedDate={selected}
   onSelectDate={setSelected}
@@ -134,7 +137,9 @@ import { JalaliCalendar } from "react-jalali-calendar";
 
 ### JalaliDatePicker
 
-یک دکمه که با کلیک روی آن یک پاپ‌اور حاوی `JalaliCalendar` باز می‌شود. با کلیک بیرون از پاپ‌اور یا فشردن Escape بسته می‌شود. تاریخ انتخاب‌شده به صورت رشته `"YYYY-MM-DD"` (میلادی) ذخیره می‌شود که برای ارسال به سرور یا ذخیره در فرم مناسب است.
+یه دکمه که با کلیک یه پاپ‌اور با تقویم باز می‌کنه. بعد از انتخاب تاریخ، پاپ‌اور بسته می‌شه. با کلیک بیرون یا زدن Escape هم بسته می‌شه.
+
+تاریخ انتخاب‌شده به شکل رشته `"YYYY-MM-DD"` میلادی برمی‌گرده که می‌تونی مستقیم به سرور بفرستیش یا توی فرم ذخیره کنی.
 
 ```tsx
 import { JalaliDatePicker } from "react-jalali-calendar";
@@ -147,50 +152,67 @@ const [date, setDate] = useState(""); // مثلاً "2024-03-20"
 **پراپ‌ها**
 
 | پراپ | نوع | پیش‌فرض | توضیح |
-|------|------|---------|-------|
-| `value` | `string` | اجباری | کلید تاریخ میلادی به فرمت `YYYY-MM-DD`، یا `""` برای بدون انتخاب. |
-| `onChange` | `(value: string) => void` | اجباری | هنگام انتخاب روز با رشته جدید `YYYY-MM-DD` صدا زده می‌شود. |
-| `placeholder` | `string` | `"انتخاب تاریخ"` | متن نمایش‌داده‌شده روی دکمه هنگامی که تاریخی انتخاب نشده. |
-| `latinDigits` | `boolean` | `false` | نمایش برچسب تاریخ با اعداد لاتین. |
-| `isDateDisabled` | `(date: Date) => boolean` | — | به `JalaliCalendar` درونی پاس داده می‌شود. |
-| `className` | `string` | — | کلاس اضافی روی المان ریشه پیکر. |
-| `calendarClassName` | `string` | — | کلاس اضافی روی `JalaliCalendar` درونی. |
+|------|-----|---------|-------|
+| `value` | `string` | اجباری | تاریخ به فرمت `YYYY-MM-DD` میلادی. برای بدون انتخاب `""` بده. |
+| `onChange` | `(value: string) => void` | اجباری | با رشته `YYYY-MM-DD` جدید صدا زده می‌شه. |
+| `placeholder` | `string` | `"انتخاب تاریخ"` | متن دکمه وقتی تاریخی انتخاب نشده. |
+| `latinDigits` | `boolean` | `false` | تاریخ نمایشی رو با اعداد لاتین نشون بده. |
+| `isDateDisabled` | `(date: Date) => boolean` | — | به تقویم داخلی پاس داده می‌شه. |
+| `className` | `string` | — | کلاس اضافی روی wrapper اصلی. |
+| `calendarClassName` | `string` | — | کلاس اضافی روی تقویم داخل پاپ‌اور. |
 
-**مثال‌ها**
+**چند مثال کاربردی**
 
 ```tsx
-// غیرفعال کردن روزهای جمعه (getDay() === 5)
+// جمعه‌ها رو غیرفعال کن
 <JalaliDatePicker
   value={date}
   onChange={setDate}
   isDateDisabled={(d) => d.getDay() === 5}
-  latinDigits
 />
 
-// با متن راهنمای سفارشی
+// متن placeholder سفارشی
 <JalaliDatePicker
   value={date}
   onChange={setDate}
   placeholder="تاریخ تولد را انتخاب کنید"
 />
+
+// اعداد لاتین
+<JalaliDatePicker
+  value={date}
+  onChange={setDate}
+  latinDigits
+/>
 ```
 
 ---
 
-## هوک بدون UI
+## هوک Headless
 
-از `useJalaliCalendar` برای ساخت یک رابط کاربری کاملاً سفارشی استفاده کنید، در حالی که مدیریت ناوبری ماه و تولید گرید را به کتابخانه بسپارید.
+اگه طراحی پیش‌فرض کتابخانه بهت نمی‌خوره و می‌خوای تقویم کاملاً سفارشی بسازی، از `useJalaliCalendar` استفاده کن. منطق ناوبری و تولید گرید رو بهش بسپار، UI رو خودت بساز.
 
 ```tsx
 import { useJalaliCalendar } from "react-jalali-calendar";
-import { PERSIAN_MONTHS, PERSIAN_WEEKDAYS_SHORT, localDateKey } from "react-jalali-calendar/core";
+import {
+  PERSIAN_MONTHS,
+  PERSIAN_WEEKDAYS_SHORT,
+  localDateKey,
+} from "react-jalali-calendar/core";
 
 function MyCalendar({ selectedDate, onSelectDate }) {
-  const { jy, jm, grid, today, todayKey, prevMonth, nextMonth, goToMonth, goToToday } =
-    useJalaliCalendar({ initialMonth: { jy: 1403, jm: 6 } });
+  const {
+    jy, jm,
+    grid,
+    todayKey,
+    prevMonth,
+    nextMonth,
+    goToToday,
+  } = useJalaliCalendar();
 
   return (
     <div dir="rtl">
+      {/* هدر ماه */}
       <div>
         <button onClick={prevMonth}>قبل</button>
         <strong>{PERSIAN_MONTHS[jm - 1]} {jy}</strong>
@@ -198,11 +220,14 @@ function MyCalendar({ selectedDate, onSelectDate }) {
         <button onClick={goToToday}>امروز</button>
       </div>
 
+      {/* گرید روزها */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)" }}>
+        {/* سرتیتر روزهای هفته */}
         {PERSIAN_WEEKDAYS_SHORT.map((d) => (
           <span key={d}>{d}</span>
         ))}
 
+        {/* سلول‌های روزها */}
         {grid.map((date, i) => {
           if (!date) return <span key={i} />;
           const key = localDateKey(date);
@@ -222,25 +247,26 @@ function MyCalendar({ selectedDate, onSelectDate }) {
 }
 ```
 
-**مقدار برگشتی**
+**چیزایی که هوک برمی‌گردونه**
 
-| خاصیت | نوع | توضیح |
-|-------|------|-------|
-| `jy` | `number` | سال جلالی در حال نمایش. |
-| `jm` | `number` | ماه جلالی در حال نمایش (۱ تا ۱۲). |
-| `grid` | `(Date \| null)[]` | آرایه‌ای از سلول‌های روز. مقادیر `null` سلول‌های خالی ابتدای ماه هستند. |
-| `today` | `JalaliDateParts` | امروز به صورت `{ jy, jm, jd }`. |
-| `todayKey` | `string` | امروز به فرمت `"YYYY-MM-DD"`، مفید برای هایلایت کردن. |
-| `prevMonth` | `() => void` | رفتن به ماه قبل. |
-| `nextMonth` | `() => void` | رفتن به ماه بعد. |
-| `goToMonth` | `(jy, jm) => void` | پریدن مستقیم به هر سال/ماه جلالی. |
-| `goToToday` | `() => void` | بازگشت به ماه جاری. |
+| مقدار | نوع | توضیح |
+|-------|-----|-------|
+| `jy` | `number` | سال جلالی که الان نشون داده می‌شه. |
+| `jm` | `number` | ماه جلالی که الان نشون داده می‌شه (۱ تا ۱۲). |
+| `grid` | `(Date \| null)[]` | آرایه سلول‌های ماه. مقادیر `null` فضاهای خالی اول ماه‌ان. |
+| `today` | `JalaliDateParts` | امروز به شکل `{ jy, jm, jd }`. |
+| `todayKey` | `string` | امروز به فرمت `"YYYY-MM-DD"`، برای هایلایت کردن مفیده. |
+| `prevMonth` | `() => void` | بره ماه قبل. |
+| `nextMonth` | `() => void` | بره ماه بعد. |
+| `goToMonth` | `(jy, jm) => void` | مستقیم به هر ماهی بره. |
+| `goToToday` | `() => void` | برگرده به ماه امروز. |
 
 **تنظیمات**
 
 ```ts
+// اگه می‌خوای تقویم از یه ماه خاص شروع بشه:
 useJalaliCalendar({
-  initialMonth: { jy: 1403, jm: 1 }, // اختیاری، پیش‌فرض: ماه جاری
+  initialMonth: { jy: 1403, jm: 1 },
 })
 ```
 
@@ -248,7 +274,7 @@ useJalaliCalendar({
 
 ## توابع پایه
 
-توابع خالص تاریخ را از مسیر فرعی `/core` ایمپورت کنید. این نقطه ورودی **هیچ وابستگی به React ندارد** و در Node.js، Server Components یا پروژه‌های غیر-React نیز قابل استفاده است.
+همه توابع خالص تبدیل و فرمت‌بندی تاریخ از مسیر `/core` در دسترسه. این مسیر **هیچ وابستگی به React نداره** و می‌تونی توی Node.js، Server Components یا هر جای دیگه‌ای هم ازش استفاده کنی.
 
 ```ts
 import {
@@ -274,7 +300,7 @@ import {
 
 #### `toJalali(date: Date): JalaliDateParts`
 
-تبدیل آبجکت `Date` به اجزای جلالی.
+یه `Date` میلادی می‌گیره و اجزای شمسیش رو برمی‌گردونه.
 
 ```ts
 toJalali(new Date("2024-03-20"));
@@ -283,18 +309,18 @@ toJalali(new Date("2024-03-20"));
 
 #### `fromJalali(parts: JalaliDateParts): Date`
 
-تبدیل `{ jy, jm, jd }` جلالی به `Date` میلادی.
+برعکسش — اجزای شمسی رو می‌گیره و یه `Date` میلادی می‌ده.
 
 ```ts
 fromJalali({ jy: 1403, jm: 1, jd: 1 });
 // => Date("2024-03-20")
 ```
 
-### قالب‌بندی
+### فرمت‌بندی
 
 #### `formatJalali(date, options?): string`
 
-رشته تاریخ جلالی برای نمایش به کاربر.
+تاریخ رو به یه رشته خوانا تبدیل می‌کنه.
 
 ```ts
 formatJalali(new Date("2024-03-20"));
@@ -308,13 +334,13 @@ formatJalali(new Date("2024-03-20"), { latinDigits: true });
 ```
 
 | گزینه | نوع | پیش‌فرض | توضیح |
-|-------|------|---------|-------|
-| `includeWeekday` | `boolean` | `false` | اضافه کردن نام روز هفته به ابتدای رشته. |
-| `latinDigits` | `boolean` | `false` | استفاده از `0-9` به جای `۰-۹`. |
+|-------|-----|---------|-------|
+| `includeWeekday` | `boolean` | `false` | اسم روز هفته رو اول اضافه کن. |
+| `latinDigits` | `boolean` | `false` | اعداد فارسی رو با لاتین جایگزین کن. |
 
 #### `formatTime(date: Date, latinDigits?: boolean): string`
 
-قالب‌بندی ساعت و دقیقه به صورت `HH:MM`.
+ساعت و دقیقه رو به شکل `HH:MM` برمی‌گردونه.
 
 ```ts
 formatTime(new Date(), true);   // "09:45"
@@ -323,7 +349,7 @@ formatTime(new Date(), false);  // "۰۹:۴۵"
 
 #### `toPersianDigits(value: string): string`
 
-جایگزین کردن `0-9` با `۰-۹` در هر جایی از رشته.
+اعداد لاتین یه رشته رو فارسی می‌کنه.
 
 ```ts
 toPersianDigits("1403/01/01"); // "۱۴۰۳/۰۱/۰۱"
@@ -331,7 +357,7 @@ toPersianDigits("1403/01/01"); // "۱۴۰۳/۰۱/۰۱"
 
 #### `toLatinDigits(value: string): string`
 
-جایگزین کردن `۰-۹` با `0-9` در هر جایی از رشته.
+برعکسش — اعداد فارسی رو لاتین می‌کنه.
 
 ```ts
 toLatinDigits("۱۴۰۳"); // "1403"
@@ -341,7 +367,7 @@ toLatinDigits("۱۴۰۳"); // "1403"
 
 #### `localDateKey(date: Date): string`
 
-رشته `"YYYY-MM-DD"` بر اساس **زمان محلی** (بدون تغییر UTC). این همان فرمتی است که `JalaliDatePicker` استفاده می‌کند.
+یه رشته `"YYYY-MM-DD"` بر اساس زمان محلی (نه UTC) برمی‌گردونه. همین فرمتیه که `JalaliDatePicker` ازش استفاده می‌کنه.
 
 ```ts
 localDateKey(new Date("2024-03-20")); // "2024-03-20"
@@ -349,22 +375,22 @@ localDateKey(new Date("2024-03-20")); // "2024-03-20"
 
 #### `isoDateOnly(date: Date): string`
 
-رشته `"YYYY-MM-DD"` بر اساس **UTC** (معادل `date.toISOString().slice(0, 10)`).
+مثل بالا ولی بر اساس UTC. معادل `date.toISOString().slice(0, 10)`.
 
 ### توابع کمکی گرید
 
 #### `getJalaliMonthGrid(jy: number, jm: number): (Date | null)[]`
 
-آرایه‌ای مسطح از سلول‌های گرید ماهانه (شروع از شنبه) برمی‌گرداند. سلول‌های خالی قبل از روز اول، `null` هستند.
+یه آرایه مسطح از سلول‌های گرید ماهانه برمی‌گردونه (از شنبه شروع می‌شه). سلول‌های `null` فضای خالی قبل از روز اول ماه‌ان.
 
 ```ts
 const cells = getJalaliMonthGrid(1403, 1);
-// cells[0] ممکن است null باشد (فاصله)، سپس آبجکت‌های Date برای هر روز
+// اول چند تا null، بعدش Date برای هر روز
 ```
 
 #### `getJalaliWeekDates(jy: number, jm: number, jd: number): Date[]`
 
-۷ آبجکت `Date` برای هفته جلالی (شنبه تا جمعه) حاوی تاریخ مشخص‌شده را برمی‌گرداند.
+هفت تا `Date` برای هفته‌ای که اون تاریخ توشه برمی‌گردونه (شنبه تا جمعه).
 
 ```ts
 getJalaliWeekDates(1403, 1, 10); // [Date(شنبه), ..., Date(جمعه)]
@@ -372,7 +398,7 @@ getJalaliWeekDates(1403, 1, 10); // [Date(شنبه), ..., Date(جمعه)]
 
 #### `addJalaliMonths(jy: number, jm: number, delta: number): JalaliDateParts`
 
-جمع یا تفریق ماه، با مدیریت صحیح تغییر سال.
+به ماه اضافه یا کم می‌کنه. تغییر سال رو هم خودش درست مدیریت می‌کنه.
 
 ```ts
 addJalaliMonths(1403, 12, 1);  // => { jy: 1404, jm: 1, jd: 1 }
@@ -381,7 +407,7 @@ addJalaliMonths(1403, 1, -1);  // => { jy: 1402, jm: 12, jd: 1 }
 
 #### `monthDateRange(jy: number, jm: number): { from: Date; to: Date }`
 
-اولین و آخرین `Date` یک ماه جلالی را برمی‌گرداند (آخرین روز با `23:59:59.999` تنظیم می‌شود). مناسب برای کوئری‌های بازه‌ای API.
+اول و آخر یه ماه شمسی رو به صورت `Date` میلادی برمی‌گردونه. برای فیلتر کردن داده‌ها توی API خیلی به کارت میاد.
 
 ```ts
 const { from, to } = monthDateRange(1403, 1);
@@ -401,19 +427,21 @@ PERSIAN_WEEKDAYS_SHORT[0] // "ش"
 
 ## تم‌بندی
 
-کامپوننت‌ها از متغیرهای CSS تحت کلاس‌های `.rjc` و `.rjc-picker` استفاده می‌کنند. هر متغیر را می‌توانید برای تطابق با سیستم طراحی خود بازنویسی کنید.
+کامپوننت‌ها از CSS variable استفاده می‌کنن. هر کدوم رو که خواستی بازنویسی کن تا با طراحی پروژه‌ات بخونه.
+
+برای تغییر کلی توی کل اپ:
 
 ```css
-/* globals.css یا هر استایل‌شیتی که بعد از styles.css بارگذاری می‌شود */
+/* globals.css */
 :root {
-  --rjc-primary:     #7c3aed;
-  --rjc-primary-fg:  #ffffff;
-  --rjc-radius:      0.75rem;
-  --rjc-font:        "Vazirmatn", sans-serif;
+  --rjc-primary:    #7c3aed;
+  --rjc-primary-fg: #ffffff;
+  --rjc-radius:     0.75rem;
+  --rjc-font:       "Vazirmatn", sans-serif;
 }
 ```
 
-یا فقط برای یک نمونه خاص:
+یا فقط برای یه جای خاص:
 
 ```css
 .booking-calendar {
@@ -426,29 +454,29 @@ PERSIAN_WEEKDAYS_SHORT[0] // "ش"
 <JalaliCalendar className="booking-calendar" ... />
 ```
 
-**تمام متغیرهای موجود**
+**همه متغیرها**
 
-| متغیر | کنترل می‌کند |
-|-------|-------------|
+| متغیر | چی رو کنترل می‌کنه |
+|-------|-------------------|
 | `--rjc-bg` | پس‌زمینه تقویم |
 | `--rjc-fg` | رنگ متن |
-| `--rjc-muted` | متن سرتیتر روزهای هفته |
-| `--rjc-border` | رنگ حاشیه |
+| `--rjc-muted` | رنگ سرتیتر روزهای هفته |
+| `--rjc-border` | رنگ حاشیه‌ها |
 | `--rjc-primary` | پس‌زمینه روز انتخاب‌شده |
-| `--rjc-primary-fg` | متن روز انتخاب‌شده |
+| `--rjc-primary-fg` | رنگ متن روز انتخاب‌شده |
 | `--rjc-hover` | پس‌زمینه روز هنگام هاور |
 | `--rjc-today-ring` | رنگ حلقه دور روز امروز |
-| `--rjc-disabled` | رنگ متن روز غیرفعال |
-| `--rjc-radius` | شعاع گوشه سلول‌ها و ظرف |
-| `--rjc-cell-size` | عرض/ارتفاع هر سلول روز |
-| `--rjc-cell-gap` | فاصله بین سلول‌ها در گرید |
+| `--rjc-disabled` | رنگ متن روزهای غیرفعال |
+| `--rjc-radius` | گردی گوشه‌های سلول‌ها |
+| `--rjc-cell-size` | اندازه هر سلول روز |
+| `--rjc-cell-gap` | فاصله بین سلول‌ها |
 | `--rjc-font` | فونت |
 
 ---
 
 ## تایپ‌های TypeScript
 
-تمام تایپ‌های عمومی از نقطه ورودی اصلی اکسپورت می‌شوند:
+همه تایپ‌های عمومی از entry point اصلی اکسپورت می‌شن:
 
 ```ts
 import type {
@@ -463,27 +491,27 @@ import type {
 
 ```ts
 type JalaliDateParts = {
-  jy: number; // سال جلالی
-  jm: number; // ماه جلالی (۱ تا ۱۲)
-  jd: number; // روز جلالی (۱ تا ۲۹/۳۰/۳۱)
+  jy: number; // سال شمسی
+  jm: number; // ماه شمسی (۱ تا ۱۲)
+  jd: number; // روز شمسی (۱ تا ۲۹/۳۰/۳۱)
 };
 ```
 
 ---
 
-## قرارداد هفته
+## ترتیب روزهای هفته
 
-این کتابخانه **شنبه را روز ۰** و **جمعه را روز ۶** در نظر می‌گیرد که با تقویم ایرانی مطابقت دارد. گرید برگشتی از `getJalaliMonthGrid` و `useJalaliCalendar` بر این اساس تنظیم شده است -- ستون اول همیشه شنبه است.
+این کتابخانه هفته رو از **شنبه** شروع می‌کنه که با تقویم ایرانی مطابقه. ستون اول گرید همیشه شنبه‌ست.
 
 | ایندکس | روز |
 |--------|-----|
-| 0 | شنبه |
-| 1 | یکشنبه |
-| 2 | دوشنبه |
-| 3 | سه‌شنبه |
-| 4 | چهارشنبه |
-| 5 | پنجشنبه |
-| 6 | جمعه |
+| ۰ | شنبه |
+| ۱ | یکشنبه |
+| ۲ | دوشنبه |
+| ۳ | سه‌شنبه |
+| ۴ | چهارشنبه |
+| ۵ | پنجشنبه |
+| ۶ | جمعه |
 
 ---
 
