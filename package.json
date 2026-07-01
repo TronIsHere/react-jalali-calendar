@@ -62,8 +62,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nobato/nobato.git",
-    "directory": "packages/react-jalali-calendar"
+    "url": "git+https://github.com/TronIsHere/react-jalali-calendar.git"
   },
   "publishConfig": {
     "access": "public"
